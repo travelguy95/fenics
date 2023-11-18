@@ -325,27 +325,17 @@ def load_darcy_pt(data_path,
     """
 
     #Load the training data
-    data = torch.load(Path(data_path).joinpath(f'stress600_training.pt').as_posix())
+    data = torch.load(Path(data_path).joinpath(f'fenic_training.pt').as_posix())
 
     x_train = data['x'][0:n_train, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
     y_train = data['y'][0:n_train, :, :].unsqueeze(channel_dim).clone()
     del data
 
-    ############ testing during the training process ###########
     idx = test_resolutions.index(train_resolution)
     test_resolutions.pop(idx)
     n_test = n_tests.pop(idx)
     test_batch_size = test_batch_sizes.pop(idx)
-    data = torch.load(Path(data_path).joinpath(f'stress600_testing.pt').as_posix())
-    #####################################
-
-    ############ testing during the validation process ###########
-    # idx = test_resolutions.index(1024)
-    # test_resolutions.pop(idx)
-    # n_test = n_tests.pop(idx)
-    # test_batch_size = test_batch_sizes.pop(idx)
-    # data = torch.load(Path(data_path).joinpath(f'bridge_testing_1024.pt').as_posix())
-    #####################################
+    data = torch.load(Path(data_path).joinpath(f'fenic_testing.pt').as_posix())
 
     x_test = data['x'][:n_test, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
     y_test = data['y'][:n_test, :, :].unsqueeze(channel_dim).clone()
@@ -383,17 +373,12 @@ def load_darcy_pt(data_path,
     test_loader = torch.utils.data.DataLoader(test_db,
                                               batch_size=test_batch_size, shuffle=False,
                                               num_workers=0, pin_memory=True, persistent_workers=False)
-    ############ for training use this ############
+                    
     test_loaders =  {train_resolution: test_loader}
-    ###############################################
-
-    ############ for validation use this ##########
-    # test_loaders =  {1024: test_loader}
-    ###############################################
 
     for (res, n_test, test_batch_size) in zip(test_resolutions, n_tests, test_batch_sizes):
         print(f'Loading test db at resolution {res} with {n_test} samples and batch-size={test_batch_size}')
-        data = torch.load(Path(data_path).joinpath(f'stress600_testing.pt').as_posix())
+        data = torch.load(Path(data_path).joinpath(f'fenic_testing.pt').as_posix())
         x_test = data['x'][:n_test, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
         y_test = data['y'][:n_test, :, :].unsqueeze(channel_dim).clone()
         del data
