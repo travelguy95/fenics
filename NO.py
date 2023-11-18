@@ -298,7 +298,7 @@ def load_darcy_flow_small(n_train, n_tests,
                 encoding='channel-wise',
                 channel_dim=1):
 
-    path = Path("").resolve().parent.joinpath('/content/drive/MyDrive/sophie')
+    path = Path("").resolve().parent.joinpath('/content/drive/MyDrive/fenic')
     return load_darcy_pt(str(path),
                          n_train=n_train, n_tests=n_tests,
                          batch_size=batch_size, test_batch_sizes=test_batch_sizes,
