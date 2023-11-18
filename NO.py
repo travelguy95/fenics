@@ -298,7 +298,7 @@ def load_darcy_flow_small(n_train, n_tests,
                 encoding='channel-wise',
                 channel_dim=1):
 
-    path = Path("").resolve().parent.joinpath('/content/drive/MyDrive/fenic')
+    path = Path("").resolve().parent.joinpath('/content/drive/MyDrive/fenics')
     return load_darcy_pt(str(path),
                          n_train=n_train, n_tests=n_tests,
                          batch_size=batch_size, test_batch_sizes=test_batch_sizes,
@@ -325,7 +325,7 @@ def load_darcy_pt(data_path,
     """
 
     #Load the training data
-    data = torch.load(Path(data_path).joinpath(f'fenic_training.pt').as_posix())
+    data = torch.load(Path(data_path).joinpath(f'fenics_training.pt').as_posix())
 
     x_train = data['x'][0:n_train, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
     y_train = data['y'][0:n_train, :, :].unsqueeze(channel_dim).clone()
@@ -335,7 +335,7 @@ def load_darcy_pt(data_path,
     test_resolutions.pop(idx)
     n_test = n_tests.pop(idx)
     test_batch_size = test_batch_sizes.pop(idx)
-    data = torch.load(Path(data_path).joinpath(f'fenic_testing.pt').as_posix())
+    data = torch.load(Path(data_path).joinpath(f'fenics_testing.pt').as_posix())
 
     x_test = data['x'][:n_test, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
     y_test = data['y'][:n_test, :, :].unsqueeze(channel_dim).clone()
@@ -378,7 +378,7 @@ def load_darcy_pt(data_path,
 
     for (res, n_test, test_batch_size) in zip(test_resolutions, n_tests, test_batch_sizes):
         print(f'Loading test db at resolution {res} with {n_test} samples and batch-size={test_batch_size}')
-        data = torch.load(Path(data_path).joinpath(f'fenic_testing.pt').as_posix())
+        data = torch.load(Path(data_path).joinpath(f'fenics_testing.pt').as_posix())
         x_test = data['x'][:n_test, :, :].unsqueeze(channel_dim).type(torch.float32).clone()
         y_test = data['y'][:n_test, :, :].unsqueeze(channel_dim).clone()
         del data
